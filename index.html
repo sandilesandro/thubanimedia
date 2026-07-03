@@ -1,98 +1,529 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thubani Media | Graphic Design Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="Thubani-Logo_1.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.21" />
+  <title>Thubani Media | Creative Design Agency</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-canvas:    #fbfaf8; 
+      --bg-void:      #0b162d; 
+      --bg-void-card: #112142; 
+      --bg-industrial:#edebe7;
+      --text-dark:    #111111;
+      --text-light:   #f4f4f4;
+      --accent:       #ff4503; 
+      --dim-dark:     #727272;
+      --rule-light:   #dbdad6;
+      --rule-dark:    #1b325f; 
+      --serif:        'Playfair Display', serif;
+      --sans:         'Inter', sans-serif;
+      --mono:         'JetBrains Mono', monospace;
+      --edge-pad:     clamp(1.21rem, 4.21vw, 3.21rem); 
+      --nav-h:        72.21px;
+    }
+
+    /* ─── CORE ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-canvas); color: var(--text-dark); font-family: var(--sans); line-height: 1.62; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+    /* ─── ASSET ANIMATIONS ─── */
+    @keyframes glassFloat {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-21.21px) rotate(3.21deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    @keyframes pulseSoft {
+      0% { transform: scale(1); opacity: 0.81; }
+      50% { transform: scale(1.12); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.81; }
+    }
+
+    .glass-asset { position: absolute; pointer-events: none; z-index: 1.21; filter: drop-shadow(0 10.21px 21.21px rgba(0,0,0,0.12)); }
+    .cube-asset { width: 321.21px; top: 12.21%; right: -5.21%; animation: glassFloat 8.21s infinite ease-in-out; }
+    .triangle-asset { width: 421.21px; bottom: 12.21%; left: -8.21%; animation: glassFloat 10.21s infinite ease-in-out reverse; opacity: 0.41; }
+    .sphere-node { width: 62.21px; animation: pulseSoft 4.21s infinite ease-in-out; }
+
+    /* ─── NAVIGATION ─── */
+    nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(251, 250, 248, 0.81); backdrop-filter: blur(18.21px); border-bottom: 1px solid rgba(0,0,0,0.06); transition: background 0.41s, border-color 0.41s; }
+    .nav-inner { padding: 0 var(--edge-pad); height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1201; }
+    .nav-logo { display: block; transition: filter 0.41s; }
+    .nav-logo img { max-height: 32.21px; width: auto; display: block; }
+    
+    .nav-links { display: flex; gap: 3.21rem; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 0.71rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12rem; color: var(--dim-dark); transition: 0.31s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* Hamburger Menu Button */
+    .burger { display: none; cursor: pointer; background: none; border: none; width: 24.21px; height: 16.21px; z-index: 2000; position: relative; }
+    .burger span { display: block; position: absolute; width: 100%; height: 1.21px; background: var(--text-dark); transition: transform 0.31s, background 0.31s, opacity 0.31s, top 0.31s; }
+    
+    .burger span:nth-child(1) { top: 0; }
+    .burger span:nth-child(2) { top: 7.21px; }
+    .burger span:nth-child(3) { top: 14.21px; }
+
+    /* Sync Navigation State Styles */
+    body.menu-active nav { background: rgba(11, 22, 45, 0.94); border-bottom-color: var(--rule-dark); }
+    body.menu-active .nav-logo { filter: invert(1) brightness(2.21); }
+    
+    body.menu-active .burger span { background: var(--text-light); }
+    body.menu-active .burger span:nth-child(1) { top: 7.21px; transform: rotate(45deg); }
+    body.menu-active .burger span:nth-child(2) { opacity: 0; transform: scale(0); }
+    body.menu-active .burger span:nth-child(3) { top: 7.21px; transform: rotate(-45deg); }
+
+    /* Mobile Overlay Menu */
+    .mobile-nav { position: fixed; top: 0; right: -100%; width: 100%; height: 100dvh; background: var(--bg-void); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1050; transition: right 0.61s cubic-bezier(0.16, 1, 0.3, 1); padding-top: var(--nav-h); }
+    .mobile-nav.active { right: 0; }
+    .mobile-nav a { font-family: var(--sans); color: #fff; font-size: 1.81rem; font-weight: 300; text-transform: uppercase; letter-spacing: 0.41rem; text-decoration: none; margin: 1.21rem 0; opacity: 0; transform: translateY(21.21px); transition: opacity 0.41s, transform 0.41s; }
+    .mobile-nav.active a { opacity: 1; transform: translateY(0); transition-delay: 0.31s; }
+
+    /* ─── BACK TO TOP ─── */
+    .btn-top { position: fixed; bottom: 32.21px; right: 32.21px; width: 48.21px; height: 48.21px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; border-radius: 4.21px; border: none; cursor: pointer; z-index: 900; opacity: 0; visibility: hidden; transition: 0.41s; box-shadow: 0 4.21px 21.21px rgba(255, 69, 3, 0.21); }
+    .btn-top.is-visible { opacity: 1; visibility: visible; }
+
+    /* ─── HERO ─── */
+    .hero { 
+      position: relative;
+      min-height: 100dvh; 
+      padding-top: var(--nav-h); 
+      background-image: linear-gradient(rgba(11,22,45,0.62), rgba(11,22,45,0.62)), url('h.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex; align-items: center; 
+      padding-left: var(--edge-pad); 
+      overflow: hidden;
+    }
+    .hero h1 { font-family: var(--serif); color: #ffffff; font-size: clamp(3.21rem, 9.21vw, 8.81rem); line-height: 0.89; z-index: 2.21; position: relative; }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+
+    .scroll-down {
+      position: absolute; bottom: 4.21rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 1.21rem; text-decoration: none; z-index: 10;
+    }
+    .scroll-line {
+      width: 1.21px; height: 64.21px; background: rgba(255,255,255,0.21);
+      position: relative; overflow: hidden;
+    }
+    .scroll-line::after {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--accent); transform: translateY(-100%);
+      animation: scroll-flow 2.21s infinite cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    @keyframes scroll-flow { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+    .scroll-text { font-family: var(--mono); font-size: 0.61rem; color: #fff; text-transform: uppercase; letter-spacing: 0.21rem; }
+
+    /* ─── SECTIONS ─── */
+    section { position: relative; padding: 12.21vh var(--edge-pad); }
+    .label { font-family: var(--mono); color: var(--accent); font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.16rem; display: block; margin-bottom: 3.21rem; }
+    .reveal { opacity: 0; transform: translateY(32.21px); transition: 1.21s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.active { opacity: 1; transform: none; }
+
+    .grid-split { display: grid; grid-template-columns: 1fr 1fr; gap: 6.21rem; }
+    .leadership-split { display: grid; grid-template-columns: 1.21fr 1.05fr 1.62fr; gap: 4.21rem; align-items: start; }
+
+    .sector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(221.21px, 1fr)); gap: 1.21rem; margin-top: 6.21rem; }
+    .sector-card { padding: 3.21rem; border: 1px solid var(--rule-light); background: #fff; transition: 0.31s; display: flex; flex-direction: column; justify-content: space-between; }
+    .sector-card:hover { border-color: var(--accent); transform: translateY(-4.21px); }
+
+    /* Services / Systems */
+    #systems { background: var(--bg-void); color: var(--text-light); }
+    .cap-row { display: grid; grid-template-columns: 81.21px 1.51fr 1fr 1.21fr; padding: 2.21rem 4.21rem; background: var(--bg-void-card); border: #ff4503; margin-bottom: 1.21rem; align-items: center; gap: 2.21rem; }
+    .system-icon-wrap { display: flex; align-items: center; justify-content: flex-start; color: var(--accent); }
+    .system-icon-wrap svg { width: 36.21px; height: 36.21px; transition: transform 0.41s ease-in-out; }
+    .cap-row:hover .system-icon-wrap svg { transform: scale(1.12); }
+
+    /* Portfolio Masonry */
+    #portfolio { padding: 0; background: var(--bg-void); border-bottom: 1px solid var(--rule-dark); }
+    .masonry { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule-dark); }
+    .masonry-item { height: 81.21px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #070e1c; padding: 1.21rem; }
+    .masonry-item img { max-width: 100%; max-height: 100%; object-fit: contain; opacity: 0.31; filter: grayscale(1); transition: 0.41s ease-in-out; }
+    .masonry-item:hover img { opacity: 0.89; filter: grayscale(0); }
+
+    /* Contact */
+    #industrial { background: var(--bg-industrial); }
+    .form-wrap { background: #fff; padding: 4.21rem; border: 1px solid var(--rule-light); }
+    .form-group { margin-bottom: 2.21rem; }
+    .form-group label { display: block; font-family: var(--mono); font-size: 0.61rem; text-transform: uppercase; margin-bottom: 0.81rem; color: var(--dim-dark); }
+    .form-group input, .form-group textarea { width: 100%; padding: 1.21rem; border: 1px solid var(--rule-light); background: var(--bg-canvas); outline: none; }
+    .submit-btn { width: 100%; padding: 1.21rem; background: var(--accent); color: #fff; border: none; font-family: var(--mono); font-size: 0.71rem; text-transform: uppercase; letter-spacing: 0.21rem; cursor: pointer; transition: 0.31s; }
+
+    /* Footer */
+    footer { background: #050a14; color: #fff; padding: 4.21vh var(--edge-pad) 3.21rem; }
+    .f-bottom { display: flex; justify-content: space-between; font-size: 0.61rem; font-family: var(--mono); opacity: 0.31; }
+
+    @media (max-width: 1024.21px) { 
+      .grid-split, .leadership-split { grid-template-columns: 1fr; gap: 4.21rem; } 
+      .masonry { grid-template-columns: repeat(2, 1fr); } 
+      .nav-links { display: none; } 
+      .burger { display: block; }
+      .cap-row { grid-template-columns: 48.21px 1fr 1fr; gap: 1.21rem; padding: 2.21rem; }
+      .system-icon-wrap { justify-content: flex-end; }
+      .masonry-item { height: 68.21px; padding: 0.81rem; }
+      .director-image-wrap { margin-left: 0 !important; }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Thubani<span>.</span>Media</div>
-        <nav>
-            <a href="#studio">About us</a>
-            <a href="#work">Work</a>
-            <a href="#contact" class="btn-cta">Start Project</a>
-        </nav>
-    </header>
+  <button class="btn-top" id="btnTop" onclick="window.scrollTo(0,0)">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
 
-    <main>
-        <section id="hero" class="hero">
-            <div class="hero-text">
-                <span class="label">Graphic Design Studio</span>
-                <h1>Building <i>Visual</i> Infrastructure.</h1>
-                <p>We design identities for the entities that power the modern network.</p>
+  <nav>
+    <div class="nav-inner">
+      <!-- Logo points directly to the top / home page -->
+      <a href="#" class="nav-logo" id="logoLink"><img src="Thubanimedia_Logo_Wordmark.png" alt="Thubani Media"></a>
+      
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#leadership">Creative Director</a></li>
+        <li><a href="#systems">Services</a></li>
+        <li><a href="#portfolio">Clients</a></li>
+        <li><a href="#industrial">Contact</a></li>
+      </ul>
+
+      <button class="burger" id="burger" aria-label="Toggle Navigation Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#about">About</a>
+    <a href="#leadership">Creative Director</a>
+    <a href="#systems">Services</a>
+    <a href="#portfolio">Clients</a>
+    <a href="#industrial">Contact</a>
+  </div>
+
+  <section class="hero">
+    <img src="images/cube.png" class="glass-asset cube-asset">
+    <h1 class="reveal">Engineering <em>Visual</em> Authority.</h1>
+    <a href="#about" class="scroll-down reveal"><div class="scroll-line"></div><span class="scroll-text">Explore Our Work</span></a>
+  </section>
+
+  <section id="about">
+    <span class="label reveal">Who We Are</span>
+    <div class="grid-split reveal">
+      <div class="about-lead">
+        <h2 style="font-family: var(--serif); font-size: 3.21rem; line-height: 1.12; margin-bottom: 2.21rem;">We build<br>brands.</h2>
+        <div style="width: 100%; height: 241.21px; margin-bottom: 2.21rem; overflow: hidden;">
+          <img src="studio.jpg" alt="Design Studio" style="width: 100%; height: 210px; object-fit: cover;">
+        </div>
+        <div style="border-left: 2.21px solid var(--accent); padding-left: 1.62rem;">
+          <h4 style="font-family: var(--mono); font-size: 0.71rem; text-transform: uppercase; color: var(--text-dark); letter-spacing: 0.12rem; margin-bottom: 0.61rem;">Our Philosophy</h4>
+          <p style="font-size: 0.89rem; color: var(--dim-dark); line-height: 1.51;">Combining bold design choices with clean layouts to ensure your business stands out effortlessly.</p>
+        </div>
+      </div>
+      
+      <div class="about-body">
+        <p style="font-size: 1.41rem; font-weight: 600; margin-bottom: 1.62rem; color: var(--text-dark); line-height: 1.31; font-family: var(--serif); font-style: italic;">
+          Great design isn't just about looking good—it's about telling a story that connects with your audience instantly.
+        </p>
+        <p style="color: var(--dim-dark); margin-bottom: 1.62rem; font-size: 0.96rem;">
+          Thubani Media is a full-service creative agency focused on digital design, brand styling, and high-impact media production. We partner with growing ambitious companies across South Africa to turn raw concepts into beautiful digital reality.
+        </p>
+        <p style="color: var(--dim-dark); margin-bottom: 1.62rem; font-size: 0.96rem;">
+          Whether you need an interactive web application, an elegant visual rebrand, or polished video assets, we bring a minimalist yet striking aesthetic to every project. We handle the heavy lifting of design and code so you can showcase the true value of your business.
+        </p>
+        <p style="color: var(--dim-dark); margin-bottom: 2.62rem; font-size: 0.96rem;">
+          Our collaborative process bridges the gap between bold ideas and measurable results. We don't just deliver a final product; we build lasting digital foundations that adapt as your business evolves. By combining sharp market insights with cutting-edge execution, we ensure your brand stands out distinctly in an increasingly crowded marketplace.
+        </p>
+      </div>
+    </div>
+    
+    <div class="sector-grid reveal">
+      <div class="sector-card">
+        <div>
+          <div style="font-family: var(--mono); font-size: 0.61rem; color: var(--accent); margin-bottom: 1.21rem;">[ 01 / BRANDING ]</div>
+          <h3 style="font-family: var(--serif); font-size: 1.62rem; margin-bottom: 0.81rem;">Visual Identity</h3>
+          <p style="color: var(--dim-dark); font-size: 0.91rem; margin-bottom: 1.62rem;">Crafting logos, curated color palettes, and clear style guidelines that accurately define your brand identity.</p>
+        </div>
+        <img src="8.png" alt="Branding" style="width: 100%; height: 240px; object-fit: cover; border-top: 1px solid var(--rule-light);">
+      </div>
+      <div class="sector-card">
+        <div>
+          <div style="font-family: var(--mono); font-size: 0.61rem; color: var(--accent); margin-bottom: 1.21rem;">[ 02 / DIGITAL ]</div>
+          <h3 style="font-family: var(--serif); font-size: 1.62rem; margin-bottom: 0.81rem;">Web Experiences</h3>
+          <p style="color: var(--dim-dark); font-size: 0.91rem; margin-bottom: 1.62rem;">Building fast, responsive web designs that work seamlessly across mobile, tablet, and desktop screens.</p>
+        </div>
+        <img src="6.png" alt="Web Development" style="width: 100%; height: 240px; object-fit: cover; border-top: 1px solid var(--rule-light);">
+      </div>
+      <div class="sector-card">
+        <div>
+          <div style="font-family: var(--mono); font-size: 0.61rem; color: var(--accent); margin-bottom: 1.21rem;">[ 03 / CONTENT ]</div>
+          <h3 style="font-family: var(--serif); font-size: 1.62rem; margin-bottom: 0.81rem;">Media Production</h3>
+          <p style="color: var(--dim-dark); font-size: 0.91rem; margin-bottom: 1.62rem;">Producing sharp photography, visual layouts, and promotional media tailored for modern digital platforms.</p>
+        </div>
+        <img src="16.png" alt="Media Creation" style="width: 100%; height: 240px; object-fit: cover; border-top: 1px solid var(--rule-light);">
+      </div>
+    </div>
+  </section>
+
+  <section id="leadership" style="background: #fff; border-bottom: 1px solid var(--rule-light);">
+    <span class="label reveal">Agency Leadership</span>
+    <div class="leadership-split reveal">
+      
+      <div>
+        <h2 class="lead-text" style="font-family: var(--serif); font-size: 3.21rem; line-height: 1.1; margin-bottom: 2.21rem;">Sandile <br><em>Mnguni</em></h2>
+      </div>
+      
+      <div class="director-image-wrap" style="position: relative; width: 100%; aspect-ratio: 1 / 0.67; margin-left: -3.42rem; background: #0b162d; overflow: hidden; clip-path: polygon(0 0, 100% 0, 100% 92.21%, 92.21% 100%, 0 100%); outline: 1px solid var(--rule-light); outline-offset: 4.21px; z-index: 2.21;">
+        <img src="sandile.jpg" alt="Sandile Mnguni | Creative Director" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 21%; display: block; filter: grayscale(0.21) contrast(1.05); transition: 0.61s cubic-bezier(0.16, 1, 0.3, 1);" onmouseover="this.style.filter='grayscale(0) contrast(1)'; this.style.transform='scale(1.04)'" onmouseout="this.style.filter='grayscale(0.21) contrast(1.05)'; this.style.transform='scale(1)'">
+      </div>
+
+      <div class="bio-content">
+        <p style="margin-bottom: 1.21rem;">As the Creative Director of Thubani Media, Sandile shapes the style, visual narrative, and user experiences behind every digital rollout.</p>
+        <p style="margin-bottom: 1.21rem;">He blends artistic vision with technical expertise to build clean web layouts and strong branding strategies. His focus is on helping businesses elevate their commercial presence through thoughtful design, interactive assets, and clear communication.</p>
+        <p style="margin-bottom: 2.21rem;">Under his guidance, Thubani Media continues to design distinct platforms for brands seeking to balance intuitive minimalist interfaces with impactful market authority.</p>
+        
+        <div class="stats-row" style="display: flex; gap: 2.21rem; margin-top: 2.21rem; flex-wrap: wrap;">
+          <div class="stat-item" style="flex: 1; min-width: 200.21px;">
+            <h4 style="font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; color: var(--accent); margin-bottom: 0.61rem;">Design Direction</h4>
+            <p style="font-size: 0.91rem; color: var(--dim-dark);">Overseeing artistic identity, brand layouts, and corporate design standards.</p>
+          </div>
+          <div class="stat-item" style="flex: 1; min-width: 200.21px;">
+            <h4 style="font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; color: var(--accent); margin-bottom: 0.61rem;">Tech Stack</h4>
+            <p style="font-size: 0.91rem; color: var(--dim-dark);">Proficient in standard prototyping tools, clean front-end setups, and full creative suites.</p>
+          </div>
+          <div class="stat-item" style="flex: 1; min-width: 200.21px;">
+            <h4 style="font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; color: var(--accent); margin-bottom: 0.61rem;">Project Focus</h4>
+            <p style="font-size: 0.91rem; color: var(--dim-dark);">Delivering premium assets across commercial portfolios, agricultural communities, and dynamic digital teams.</p>
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+<section id="systems">
+    <span class="label reveal">What We Do</span>
+    
+    <!-- Explicit two-column grid layout -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.62rem;">
+      
+      <!-- LEFT COLUMN (01, 02, 03) -->
+      <div style="display: flex; flex-direction: column; gap: 1.21rem;">
+        
+        <!-- 01. Brand Strategy -->
+        <div class="cap-row reveal" style="padding: 1.41rem 2.21rem; margin-bottom: 0; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: flex-start; gap: 1.62rem;">
+            <span style="color: var(--accent); font-family: var(--mono); font-size: 1.41rem; font-weight: 600; line-height: 1;">01.</span>
+            <div>
+              <h3 style="font-size: 1.12rem; line-height: 1.21; margin-bottom: 0.31rem;">Brand Strategy</h3>
+              <p style="font-size: 0.81rem; line-height: 1.41; color: var(--dim-dark);">Defining unforgettable style directions.</p>
             </div>
-            <div class="hero-image">
-                <img src="hero.jpg" alt="Graphic Design Infrastructure Render">
+          </div>
+          <div class="system-icon-wrap" style="margin-left: 1.21rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round" style="width: 28.21px; height: 28.21px;">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 17 22 12"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 02. Web Development -->
+        <div class="cap-row reveal" style="padding: 1.41rem 2.21rem; margin-bottom: 0; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: flex-start; gap: 1.62rem;">
+            <span style="color: var(--accent); font-family: var(--mono); font-size: 1.41rem; font-weight: 600; line-height: 1;">02.</span>
+            <div>
+              <h3 style="font-size: 1.12rem; line-height: 1.21; margin-bottom: 0.31rem;">Web Development</h3>
+              <p style="font-size: 0.81rem; line-height: 1.41; color: var(--dim-dark);">Building high-performance, modern sites.</p>
             </div>
-        </section>
+          </div>
+          <div class="system-icon-wrap" style="margin-left: 1.21rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round" style="width: 28.21px; height: 28.21px;">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+              <line x1="14" y1="4" x2="10" y2="20"></line>
+            </svg>
+          </div>
+        </div>
 
-        <section id="studio" class="studio">
-            <div class="studio-content">
-                <span class="label">The Philosophy</span>
-                <h2>Design as <i>Architecture.</i></h2>
-                <div class="studio-grid">
-                    <div class="logic-item">
-                        <small>01 / PRECISION</small>
-                        <p>We operate on strict grid systems to ensure brand longevity and technical scalability.</p>
-                    </div>
-
-                    <div class="logic-item">
-                        <small>02 / SECTOR</small>
-                        <p>Specialized branding for ISPs, Software Labs, and Infrastructure firms in South Africa.</p>
-                    </div>
-                </div>
+        <!-- 03. Digital Content -->
+        <div class="cap-row reveal" style="padding: 1.41rem 2.21rem; margin-bottom: 0; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: flex-start; gap: 1.62rem;">
+            <span style="color: var(--accent); font-family: var(--mono); font-size: 1.41rem; font-weight: 600; line-height: 1;">03.</span>
+            <div>
+              <h3 style="font-size: 1.12rem; line-height: 1.21; margin-bottom: 0.31rem;">Digital Content</h3>
+              <p style="font-size: 0.81rem; line-height: 1.41; color: var(--dim-dark);">Developing commercial video and media assets.</p>
             </div>
-        </section>
+          </div>
+          <div class="system-icon-wrap" style="margin-left: 1.21rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round" style="width: 28.21px; height: 28.21px;">
+              <path d="M23 7l-7 5 7 5V7z"></path>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+            </svg>
+          </div>
+        </div>
 
-        <section id="work" class="work-grid">
-            <div class="section-title">
-                <span class="label">Project Archive</span>
+      </div>
+
+      <!-- RIGHT COLUMN (04, 05, 06) -->
+      <div style="display: flex; flex-direction: column; gap: 1.21rem;">
+        
+        <!-- 04. Interface Design -->
+        <div class="cap-row reveal" style="padding: 1.41rem 2.21rem; margin-bottom: 0; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: flex-start; gap: 1.62rem;">
+            <span style="color: var(--accent); font-family: var(--mono); font-size: 1.41rem; font-weight: 600; line-height: 1;">04.</span>
+            <div>
+              <h3 style="font-size: 1.12rem; line-height: 1.21; margin-bottom: 0.31rem;">Interface Design</h3>
+              <p style="font-size: 0.81rem; line-height: 1.41; color: var(--dim-dark);">Mapping seamless app wireframes and flows.</p>
             </div>
+          </div>
+          <div class="system-icon-wrap" style="margin-left: 1.21rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round" style="width: 28.21px; height: 28.21px;">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+            </svg>
+          </div>
+        </div>
 
-            <div class="cards-container">
-                <a href="#" class="card">
-                    <div class="card-content">
-                        <small>PROJECT 01</small>
-                        <h3>Acumate Solutions</h3>
-                        <p>Visualising Systems</p>
-                    </div>
-                </a>
-
-                <a href="#" class="card">
-                    <div class="card-content">
-                        <small>PROJECT 02</small>
-                        <h3>PLUXNET</h3>
-                        <p>Network Identity</p>
-                    </div>
-                </a>
-
-                <a href="#" class="card">
-                    <div class="card-content">
-                        <small>PROJECT 03</small>
-                        <h3>BOTTOMLINE</h3>
-                        <p>FinTech Interface</p>
-                    </div>
-                </a>
-
+        <!-- 05. Brand Voice -->
+        <div class="cap-row reveal" style="padding: 1.41rem 2.21rem; margin-bottom: 0; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: flex-start; gap: 1.62rem;">
+            <span style="color: var(--accent); font-family: var(--mono); font-size: 1.41rem; font-weight: 600; line-height: 1;">05.</span>
+            <div>
+              <h3 style="font-size: 1.12rem; line-height: 1.21; margin-bottom: 0.31rem;">Brand Voice</h3>
+              <p style="font-size: 0.81rem; line-height: 1.41; color: var(--dim-dark);">Writing highly targeted marketing statements.</p>
             </div>
-        </section>
+          </div>
+          <div class="system-icon-wrap" style="margin-left: 1.21rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round" style="width: 28.21px; height: 28.21px;">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+          </div>
+        </div>
 
-        <section id="contact" class="contact">
-            <div class="contact-wrap">
-                <h2>Ready to <i>deploy?</i></h2>
-                <a href="mailto:hello@thubani.media" class="email">hello@thubani.media</a>
+        <!-- 06. Media Rollout -->
+        <div class="cap-row reveal" style="padding: 1.41rem 2.21rem; margin-bottom: 0; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: flex-start; gap: 1.62rem;">
+            <span style="color: var(--accent); font-family: var(--mono); font-size: 1.41rem; font-weight: 600; line-height: 1;">06.</span>
+            <div>
+              <h3 style="font-size: 1.12rem; line-height: 1.21; margin-bottom: 0.31rem;">Media Rollout</h3>
+              <p style="font-size: 0.81rem; line-height: 1.41; color: var(--dim-dark);">Deploying digital assets across live targets.</p>
             </div>
-        </section>
-    </main>
+          </div>
+          <div class="system-icon-wrap" style="margin-left: 1.21rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.62" stroke-linecap="round" stroke-linejoin="round" style="width: 28.21px; height: 28.21px;">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </div>
+        </div>
 
-    <footer>
-        <p>© 2026 Thubani Media. All rights reserved.</p>
-    </footer>
+      </div>
 
+    </div>
+  </section>
+
+<section id="portfolio" style="margin-top: 0;">
+    <!-- Section label with top margin cleared to remove the excess whitespace -->
+    <span class="label reveal" style="color: var(--accent); padding-left: var(--edge-pad); margin-top: 0; margin-bottom: 2.21rem;">Our clients</span>
+    
+    <div class="masonry reveal">
+      <div class="masonry-item"><img src="msf.jpg" alt="Client Logo 1"></div>
+      <div class="masonry-item"><img src="mbvit.png" alt="Client Logo 2"></div>
+      <div class="masonry-item"><img src="pluxnet.png" alt="Client Logo 3"></div>
+      <div class="masonry-item"><img src="gfc.png" alt="Client Logo 4"></div>
+    </div>
+  </section>
+
+  <section id="industrial">
+    <span class="label reveal">Get In Touch</span>
+    <div class="grid-split reveal">
+      <div class="contact-info" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <h2>Let's build something <em>memorable</em> together.</h2>
+          <p style="margin-top: 2.21rem; color: var(--dim-dark); margin-bottom: 2.21rem;">Drop us a line to discuss your ideas, visual needs, or upcoming digital projects.</p>
+        </div>
+        <img src="contact.jpg" alt="Studio Collaboration" style="width: 100%; height: 250px; object-fit: cover; border: 1px solid var(--rule-light);">
+      </div>
+      <div class="form-wrap">
+        <form id="contactForm">
+          <div class="form-group"><label>Name</label><input type="text" required></div>
+          <div class="form-group"><label>Email Address</label><input type="email" required></div>
+          <div class="form-group"><label>Tell us about your project</label><textarea rows="4" required></textarea></div>
+          <button type="submit" class="submit-btn">Let's Connect</button>
+        </form>
+        <div id="formSuccess" style="display:none; text-align: center; padding: 2.21rem;">
+          <h3 style="font-family: var(--serif); font-size: 1.81rem; color: var(--accent);">Message Sent!</h3>
+          <p style="font-family: var(--mono); font-size: 0.71rem; margin-top: 1.21rem;">We will review your brief and get back to you shortly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-bottom">
+      <div>© 2026 THUBANI MEDIA GROUP</div>
+    </div>
+  </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileNav = document.getElementById('mobileNav');
+    const btnTop = document.getElementById('btnTop');
+    const logoLink = document.getElementById('logoLink');
+
+    // Clean execution to toggle state and prevent mobile scrolling
+    function closeMenu() {
+      mobileNav.classList.remove('active');
+      document.body.classList.remove('menu-active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function toggleMenu(e) {
+      e.stopPropagation(); // Avoid event collision
+      const isOpening = !mobileNav.classList.contains('active');
+      
+      if (isOpening) {
+        mobileNav.classList.add('active');
+        document.body.classList.add('menu-active');
+        document.body.style.overflow = 'hidden';
+      } else {
+        closeMenu();
+      }
+    }
+
+    // Single click bindings ensuring clean touch tracking
+    burger.addEventListener('click', toggleMenu);
+
+    // If logo link is clicked while menu is open, collapse the menu smoothly
+    logoLink.addEventListener('click', () => {
+      closeMenu();
+    });
+
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    window.addEventListener('scroll', () => { 
+      btnTop.classList.toggle('is-visible', window.pageYOffset > 421.21); 
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      this.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    });
+  </script>
 </body>
 </html>
